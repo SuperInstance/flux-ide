@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-tertiary: #2d2d30;
+  --bg-hover: #2a2d2e;
+  --bg-active: #37373d;
+  --bg-input: #3c3c3c;
+  --bg-panel: #1e1e1e;
+  --bg-tab: #2d2d30;
+  --bg-tab-active: #1e1e1e;
+  --bg-toolbar: #323233;
+  --bg-statusbar: #007acc;
+  --bg-titlebar: #3c3c3c;
+  --bg-border: #474747;
+  --bg-sidebar: #252526;
+  --bg-activitybar: #333333;
+  --bg-dropdown: #252526;
+  --bg-list-hover: #2a2d2e;
+  --bg-list-active: #094771;
+  --bg-scrollbar: #424242;
+  --bg-scrollbar-hover: #4f4f4f;
+
+  --text-primary: #cccccc;
+  --text-secondary: #858585;
+  --text-muted: #6a6a6a;
+  --text-bright: #ffffff;
+  --text-accent: #0078ff;
+  --text-success: #4ec9b0;
+  --text-warning: #dcdcaa;
+  --text-error: #f44747;
+  --text-info: #75beff;
+
+  --accent: #0078ff;
+  --accent-hover: #1e8fff;
+  --accent-active: #005ec4;
+  --accent-subtle: rgba(0, 120, 255, 0.15);
+
+  --border: #474747;
+  --border-light: #3c3c3c;
+
+  --keyword: #569cd6;
+  --string: #ce9178;
+  --number: #b5cea8;
+  --comment: #6a9955;
+  --type: #4ec9b0;
+  --function: #dcdcaa;
+  --variable: #9cdcfe;
+  --operator: #d4d4d4;
+  --directive: #c586c0;
+  --heading: #569cd6;
+  --frontmatter: #ce9178;
+  --code-block: #d4d4d4;
+  --agent-keyword: #c586c0;
+  --a2a-op: #d7ba7d;
+}
+
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-scrollbar);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-scrollbar-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 120, 255, 0.3);
+}
+
+/* Focus outline */
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-10px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 120, 255, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(0, 120, 255, 0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.15s ease-out;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.15s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.15s ease-out;
+}
+
+/* Monaco editor overrides */
+.monaco-editor .margin {
+  background: var(--bg-primary) !important;
+}
+
+/* Tab hover effects */
+.tab-hover:hover {
+  background: var(--bg-hover);
+}
+
+/* Resize handle styling */
+.resize-handle {
+  position: relative;
+  z-index: 10;
+}
+
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  transition: background 0.15s;
+}
+
+.resize-handle:hover::after {
+  background: var(--accent);
+}
+
+/* Modal overlay */
+.modal-overlay {
+  animation: fadeIn 0.1s ease-out;
+}
+
+.modal-content {
+  animation: slideInUp 0.2s ease-out;
+}
+
+/* Tooltip */
+.tooltip {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--bg-activitybar);
+  color: var(--text-bright);
+  border: 1px solid var(--border);
+}
