@@ -6,7 +6,7 @@
 import { describe, it, expect } from 'vitest';
 import { parseFluxFile } from '../flux-parser';
 import { compileFluxToFIR, generateBytecode } from '../flux-compiler';
-import { createVMFromFIR, executeStep, executeAll } from '../vm-simulator';
+import { createVMFromFIR } from '../vm-simulator';
 
 const simpleFlux = `---
 title: Test Module
