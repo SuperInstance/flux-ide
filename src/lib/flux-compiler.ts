@@ -219,6 +219,37 @@ function analyzeCodeLine(line: string, _instructions: FIRInstruction[], labelCou
     return { opcode: 'CMP', operands: ['R8', 'R9'], comment: `; if condition` };
   }
 
+  // Store (check before assignment since '->' contains '=')
+  if (lower.startsWith('store') || lower.includes('->')) {
+    return { opcode: 'STORE', operands: ['R8', 'R9'], comment: `; ${line}` };
+  }
+
+  // Load (check before assignment)
+  if (lower.startsWith('load') || lower.includes('<-')) {
+    return { opcode: 'LOAD', operands: ['R8', 'R9'], comment: `; ${line}` };
+  }
+
+  // Agent operations (check before function call to avoid false CALL matches)
+  // Order matters: more specific patterns first (delegate before ask, spawn before send, etc.)
+  if (lower.includes('delegate')) {
+    return { opcode: 'DELEGATE', operands: ['R8', 'R9'], comment: `; ${line}` };
+  }
+  if (lower.includes('broadcast')) {
+    return { opcode: 'BROADCAST', operands: ['R8'], comment: `; ${line}` };
+  }
+  if (lower.includes('barrier')) {
+    return { opcode: 'BARRIER', operands: ['R8'], comment: `; ${line}` };
+  }
+  if (lower.includes('spawn')) {
+    return { opcode: 'SPAWN', operands: ['R8'], comment: `; ${line}` };
+  }
+  if (lower.includes('tell') || lower.includes('send')) {
+    return { opcode: 'TELL', operands: ['R8', 'R9'], comment: `; ${line}` };
+  }
+  if (lower.includes('ask') || lower.includes('query')) {
+    return { opcode: 'ASK', operands: ['R8', 'R9'], comment: `; ${line}` };
+  }
+
   // Function call
   if (lower.match(/\w+\s*\(/) && !lower.match(/^(if|while|for|switch|return)/)) {
     const fnMatch = line.match(/(\w+)\s*\(/);
@@ -230,36 +261,6 @@ function analyzeCodeLine(line: string, _instructions: FIRInstruction[], labelCou
   // Assignment
   if (line.includes('=') && !line.includes('==') && !line.match(/^(if|while|for|int|float|double|char|void|long|short|let|var|const)/)) {
     return { opcode: 'MOV', operands: ['R8', 'R9'], comment: `; ${line}` };
-  }
-
-  // Store
-  if (lower.startsWith('store') || lower.includes('->')) {
-    return { opcode: 'STORE', operands: ['R8', 'R9'], comment: `; ${line}` };
-  }
-
-  // Load
-  if (lower.startsWith('load') || lower.includes('<-')) {
-    return { opcode: 'LOAD', operands: ['R8', 'R9'], comment: `; ${line}` };
-  }
-
-  // Agent operations
-  if (lower.includes('tell') || lower.includes('send')) {
-    return { opcode: 'TELL', operands: ['R8', 'R9'], comment: `; ${line}` };
-  }
-  if (lower.includes('ask') || lower.includes('query')) {
-    return { opcode: 'ASK', operands: ['R8', 'R9'], comment: `; ${line}` };
-  }
-  if (lower.includes('delegate')) {
-    return { opcode: 'DELEGATE', operands: ['R8', 'R9'], comment: `; ${line}` };
-  }
-  if (lower.includes('broadcast')) {
-    return { opcode: 'BROADCAST', operands: ['R8'], comment: `; ${line}` };
-  }
-  if (lower.includes('spawn')) {
-    return { opcode: 'SPAWN', operands: ['R8'], comment: `; ${line}` };
-  }
-  if (lower.includes('barrier')) {
-    return { opcode: 'BARRIER', operands: ['R8'], comment: `; ${line}` };
   }
 
   // Spawn agent (Python def run / def on_receive)

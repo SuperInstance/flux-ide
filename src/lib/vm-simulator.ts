@@ -369,7 +369,10 @@ function executeBytecode(vm: VMState, bytecode: BytecodeLine[], mainFn: FIRFunct
       }
       case 'HALT': {
         vm.halted = true;
-        break;
+        vm.output.push('');
+        vm.output.push(`[FLUX VM] Execution complete (${vm.cycles} cycles)`);
+        vm.output.push(`[FLUX VM] Return value: R0 = ${vm.registers[0]}`);
+        return;
       }
       default:
         break;
